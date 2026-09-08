@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Obscgrader</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">O</div>
+      <div>
+        <div class="brand-name">OBSCGRADER</div>
+        <div class="brand-sub">virtual skin arcade</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-btn active" data-view="cases">Кейсы</button>
+      <button class="nav-btn" data-view="upgrader">Апгрейдер</button>
+      <button class="nav-btn" data-view="battle">Case Battle</button>
+      <button class="nav-btn" data-view="inventory">Инвентарь</button>
+    </nav>
+
+    <div class="balance-wrap">
+      <div class="balance-label">Баланс</div>
+      <div class="balance"><span id="balance">2500</span> OP</div>
+      <button id="adRewardBtn" class="reward-btn">+250 за рекламу</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section id="cases" class="view active-view">
+      <div class="hero">
+        <div>
+          <div class="eyebrow">VIRTUAL ONLY</div>
+          <h1>Открывай кейсы.<br><span>Собирай коллекцию.</span></h1>
+          <p>Все предметы существуют только внутри Obscgrader и не имеют денежной стоимости.</p>
+        </div>
+
+        <div class="hero-card">
+          <div class="glow-orb"></div>
+          <div class="hero-case">◆</div>
+          <div class="hero-meta">OBSCURA DROP</div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">CASES</div>
+          <h2>Популярные кейсы</h2>
+        </div>
+        <div class="muted">Шансы фиксированы и показаны в карточках</div>
+      </div>
+
+      <div id="caseGrid" class="case-grid"></div>
+      <div id="caseResult" class="result-panel hidden"></div>
+    </section>
+
+    <section id="upgrader" class="view">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">UPGRADER</div>
+          <h2>Апгрейд предмета</h2>
+        </div>
+        <div class="muted">Результат определяется локальным демо-рандомом</div>
+      </div>
+
+      <div class="upgrader-layout">
+        <div class="inventory-picker card">
+          <h3>Твой предмет</h3>
+          <select id="upgradeSource"></select>
+          <div id="sourcePreview" class="item-preview empty">Выбери предмет</div>
+        </div>
+
+        <div class="upgrade-center card">
+          <div class="chance-ring">
+            <div class="chance-ring-inner">
+              <span id="chanceValue">50%</span>
+              <small>ШАНС</small>
+            </div>
+          </div>
+
+          <input id="chanceSlider" type="range" min="10" max="90" value="50" />
+          <button id="upgradeBtn" class="primary-btn">АПГРЕЙД</button>
+          <div id="upgradeStatus" class="status-text">Выбери предмет из инвентаря</div>
+        </div>
+
+        <div class="target-card card">
+          <h3>Цель</h3>
+          <div id="targetPreview" class="item-preview target">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="battle" class="view">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">BATTLE</div>
+          <h2>Case Battle против бота</h2>
+        </div>
+        <div class="muted">Одиночный виртуальный раунд без реальных ставок</div>
+      </div>
+
+      <div class="battle-wrap card">
+        <div class="battle-player">
+          <div class="avatar">YOU</div>
+          <div class="battle-name">Ты</div>
+          <div id="yourBattleDrop" class="battle-drop">?</div>
+        </div>
+
+        <div class="vs">VS</div>
+
+        <div class="battle-player">
+          <div class="avatar bot">BOT</div>
+          <div class="battle-name">ObscBot</div>
+          <div id="botBattleDrop" class="battle-drop">?</div>
+        </div>
+      </div>
+
+      <div class="battle-actions">
+        <button id="battleBtn" class="primary-btn">НАЧАТЬ BATTLE — 300 OP</button>
+      </div>
+
+      <div id="battleStatus" class="status-text center"></div>
+    </section>
+
+    <section id="inventory" class="view">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">INVENTORY</div>
+          <h2>Твоя коллекция</h2>
+        </div>
+        <div class="muted"><span id="inventoryCount">0</span> предметов</div>
+      </div>
+
+      <div id="inventoryGrid" class="inventory-grid"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
