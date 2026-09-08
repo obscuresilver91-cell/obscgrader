@@ -565,3 +565,326 @@ document
   });
 
 renderAll();
+/* =========================================
+   OBSCGRADER VISUAL UPDATE v1.1
+   ========================================= */
+
+(() => {
+
+  const rarityNames = {
+    common: "Обычный",
+    uncommon: "Необычный",
+    rare: "Редкий",
+    epic: "Эпический",
+    legendary: "Легендарный",
+    mythic: "Мифический"
+  };
+
+  function decorateVisuals() {
+
+    document
+      .querySelectorAll(".item-card")
+      .forEach((card, index) => {
+
+        const item = state.inventory[index];
+
+        if (!item) return;
+
+        card.dataset.rarity = item.rarity;
+
+        const icon = card.querySelector(".item-icon");
+
+        if (icon) {
+          icon.classList.add("skin-texture");
+        }
+
+      });
+
+  }
+
+  function createOpeningOverlay() {
+
+    let overlay =
+      document.querySelector(".case-opening-overlay");
+
+    if (overlay) {
+      return overlay;
+    }
+
+    overlay = document.createElement("div");
+
+    overlay.className =
+      "case-opening-overlay";
+
+    overlay.innerHTML = `
+      <div class="case-opening-box">
+
+        <div class="opening-title">
+          OPENING OBSCGRADER CASE
+        </div>
+
+        <div class="roulette-window">
+          <div class="roulette-track"></div>
+        </div>
+
+        <div class="opening-result">
+
+          <div class="opening-result-icon">
+            ◆
+          </div>
+
+          <div class="opening-result-name">
+            Item
+          </div>
+
+          <div class="opening-result-rarity">
+            Drop
+          </div>
+
+        </div>
+
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    return overlay;
+  }
+
+  function createRouletteItems(overlay) {
+
+    const track =
+      overlay.querySelector(".roulette-track");
+
+    track.innerHTML = "";
+
+    for (let i = 0; i < 26; i++) {
+
+      const item =
+        items[
+          Math.floor(
+            Math.random() * items.length
+          )
+        ];
+
+      const element =
+        document.createElement("div");
+
+      element.className =
+        "roulette-item";
+
+      element.innerHTML = `
+        <div class="roulette-icon">
+          ${item.icon}
+        </div>
+
+        <div class="roulette-name">
+          ${item.name}
+        </div>
+      `;
+
+      track.appendChild(element);
+    }
+
+  }
+
+  function particles(overlay, rarity) {
+
+    if (
+      rarity !== "legendary" &&
+      rarity !== "mythic"
+    ) {
+      return;
+    }
+
+    const count =
+      rarity === "mythic"
+        ? 42
+        : 26;
+
+    for (let i = 0; i < count; i++) {
+
+      const particle =
+        document.createElement("div");
+
+      particle.className =
+        "obsc-particle";
+
+      const angle =
+        Math.random() *
+        Math.PI *
+        2;
+
+      const distance =
+        70 +
+        Math.random() *
+        240;
+
+      particle.style.setProperty(
+        "--x",
+        `${Math.cos(angle) * distance}px`
+      );
+
+      particle.style.setProperty(
+        "--y",
+        `${Math.sin(angle) * distance}px`
+      );
+
+      if (rarity === "mythic") {
+
+        particle.style.background =
+          Math.random() > .5
+            ? "#ff4fa0"
+            : "#8b6cff";
+
+      } else {
+
+        particle.style.background =
+          Math.random() > .5
+            ? "#ffb84d"
+            : "#fff0a8";
+
+      }
+
+      overlay
+        .querySelector(".case-opening-box")
+        .appendChild(particle);
+
+      setTimeout(
+        () => particle.remove(),
+        1000
+      );
+
+    }
+
+  }
+
+  const originalOpenCase =
+    window.openCase;
+
+  let openingLocked = false;
+
+  window.openCase = function(id) {
+
+    if (openingLocked) {
+      return;
+    }
+
+    const selectedCase =
+      cases.find(
+        item => item.id === id
+      );
+
+    if (
+      !selectedCase ||
+      state.balance <
+        selectedCase.price
+    ) {
+
+      originalOpenCase(id);
+
+      return;
+    }
+
+    openingLocked = true;
+
+    const overlay =
+      createOpeningOverlay();
+
+    createRouletteItems(overlay);
+
+    overlay.classList.remove("result");
+
+    overlay.classList.add("show");
+
+    setTimeout(() => {
+
+      overlay.classList.add("rolling");
+
+    }, 30);
+
+    setTimeout(() => {
+
+      const before =
+        state.inventory.length;
+
+      originalOpenCase(id);
+
+      const drop =
+        state.inventory[
+          state.inventory.length - 1
+        ];
+
+      overlay.classList.remove("rolling");
+
+      if (
+        drop &&
+        state.inventory.length > before
+      ) {
+
+        overlay.classList.add("result");
+
+        overlay
+          .querySelector(
+            ".opening-result-icon"
+          )
+          .textContent =
+            drop.icon;
+
+        overlay
+          .querySelector(
+            ".opening-result-name"
+          )
+          .textContent =
+            drop.name;
+
+        overlay
+          .querySelector(
+            ".opening-result-rarity"
+          )
+          .textContent =
+            `${rarityNames[drop.rarity]} · ${drop.value} OP`;
+
+        particles(
+          overlay,
+          drop.rarity
+        );
+
+      }
+
+      setTimeout(() => {
+
+        overlay.classList.remove(
+          "show",
+          "result",
+          "rolling"
+        );
+
+        openingLocked = false;
+
+      }, 1500);
+
+    }, 1080);
+
+  };
+
+  const observer =
+    new MutationObserver(() => {
+
+      requestAnimationFrame(
+        decorateVisuals
+      );
+
+    });
+
+  observer.observe(
+    document.body,
+    {
+      childList: true,
+      subtree: true
+    }
+  );
+
+  decorateVisuals();
+
+})();
