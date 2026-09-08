@@ -641,3 +641,500 @@ h1 span {
     text-align: center;
   }
 }
+/* =========================================
+   OBSCGRADER VISUAL UPDATE v1.1
+   ========================================= */
+
+.case-card,
+.item-card,
+.hero-card,
+.primary-btn,
+.reward-btn {
+  transition:
+    transform .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease,
+    filter .22s ease;
+}
+
+.case-card:hover,
+.item-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(124, 92, 255, .42);
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, .38),
+    0 0 28px rgba(124, 92, 255, .12);
+}
+
+.case-open-btn,
+.primary-btn,
+.reward-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.case-open-btn::after,
+.primary-btn::after,
+.reward-btn::after {
+  content: "";
+  position: absolute;
+  inset: -100% -60%;
+  background:
+    linear-gradient(
+      110deg,
+      transparent 40%,
+      rgba(255,255,255,.22) 50%,
+      transparent 60%
+    );
+  transform: translateX(-60%);
+  transition: transform .55s ease;
+}
+
+.case-open-btn:hover::after,
+.primary-btn:hover::after,
+.reward-btn:hover::after {
+  transform: translateX(60%);
+}
+
+/* CASE TEXTURES */
+
+.case-art {
+  position: relative;
+  overflow: hidden;
+}
+
+.case-art::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 11px,
+      rgba(255,255,255,.035) 11px 12px
+    );
+  animation: obscTextureMove 9s linear infinite;
+}
+
+.case-art::after {
+  content: "";
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  background: rgba(124,92,255,.22);
+  filter: blur(35px);
+  animation: obscPulse 3s ease-in-out infinite;
+}
+
+.case-art {
+  isolation: isolate;
+}
+
+.case-art > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Current icon itself */
+.case-art {
+  text-shadow:
+    0 0 20px rgba(140,110,255,.7),
+    0 0 50px rgba(80,180,255,.25);
+}
+
+/* ITEM TEXTURES */
+
+.item-icon,
+.skin-texture {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.item-icon::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background:
+    linear-gradient(
+      120deg,
+      transparent 20%,
+      rgba(255,255,255,.11) 45%,
+      transparent 70%
+    );
+  transform: rotate(12deg);
+  animation: obscSkinSweep 4.5s ease-in-out infinite;
+  z-index: -1;
+}
+
+.item-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .34;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 8px,
+      rgba(255,255,255,.045) 8px 9px
+    );
+  z-index: -1;
+}
+
+/* RARITIES */
+
+.item-card[data-rarity="common"] {
+  border-color: rgba(180,190,210,.18);
+}
+
+.item-card[data-rarity="uncommon"] {
+  border-color: rgba(65,170,255,.28);
+}
+
+.item-card[data-rarity="rare"] {
+  border-color: rgba(90,100,255,.38);
+  box-shadow: inset 0 0 30px rgba(80,100,255,.035);
+}
+
+.item-card[data-rarity="epic"] {
+  border-color: rgba(170,80,255,.40);
+  box-shadow: inset 0 0 35px rgba(160,70,255,.05);
+}
+
+.item-card[data-rarity="legendary"] {
+  border-color: rgba(255,170,65,.48);
+  box-shadow:
+    inset 0 0 35px rgba(255,160,50,.05),
+    0 0 20px rgba(255,160,50,.04);
+}
+
+.item-card[data-rarity="mythic"] {
+  border-color: rgba(255,70,150,.55);
+  box-shadow:
+    inset 0 0 40px rgba(255,50,140,.07),
+    0 0 28px rgba(255,40,150,.06);
+}
+
+.item-card[data-rarity="rare"] .item-icon {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(80,110,255,.28), transparent 60%),
+    #0c0f17;
+}
+
+.item-card[data-rarity="epic"] .item-icon {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(170,70,255,.34), transparent 60%),
+    #0c0f17;
+}
+
+.item-card[data-rarity="legendary"] .item-icon {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,160,45,.35), transparent 60%),
+    #0c0f17;
+}
+
+.item-card[data-rarity="mythic"] .item-icon {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,40,150,.38), transparent 60%),
+    #0c0f17;
+}
+
+/* HERO */
+
+.hero-case {
+  animation: obscFloat 4s ease-in-out infinite;
+}
+
+.glow-orb {
+  animation:
+    obscPulse 3s ease-in-out infinite,
+    obscHue 8s linear infinite;
+}
+
+/* OPENING OVERLAY */
+
+.case-opening-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+
+  background: rgba(5,7,12,.76);
+  backdrop-filter: blur(20px);
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity .22s ease;
+}
+
+.case-opening-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.case-opening-box {
+  position: relative;
+  width: min(820px, 96vw);
+  padding: 22px;
+  overflow: hidden;
+
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 24px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(124,92,255,.18),
+      transparent 45%
+    ),
+    #10131d;
+
+  box-shadow:
+    0 30px 100px rgba(0,0,0,.65),
+    0 0 80px rgba(110,80,255,.12);
+}
+
+.opening-title {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .19em;
+  color: #969eb4;
+}
+
+.roulette-window {
+  position: relative;
+  overflow: hidden;
+  height: 150px;
+  border-radius: 16px;
+
+  background: #080a10;
+  border: 1px solid rgba(255,255,255,.07);
+}
+
+.roulette-window::before {
+  content: "";
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+
+  background: white;
+
+  box-shadow:
+    0 0 12px white,
+    0 0 35px #7c5cff;
+}
+
+.roulette-window::after {
+  content: "";
+  position: absolute;
+  z-index: 9;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #080a10 0%,
+      transparent 22%,
+      transparent 78%,
+      #080a10 100%
+    );
+
+  pointer-events: none;
+}
+
+.roulette-track {
+  position: absolute;
+  left: 50%;
+  top: 13px;
+
+  display: flex;
+  gap: 10px;
+
+  transform: translateX(-15%);
+}
+
+.case-opening-overlay.rolling .roulette-track {
+  animation: obscRoulette 1.05s cubic-bezier(.08,.72,.18,1) forwards;
+}
+
+.roulette-item {
+  flex: 0 0 118px;
+  height: 124px;
+
+  display: grid;
+  place-content: center;
+  text-align: center;
+
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+
+  background:
+    radial-gradient(circle, rgba(120,90,255,.16), transparent 66%),
+    #10131c;
+}
+
+.roulette-icon {
+  font-size: 38px;
+  margin-bottom: 7px;
+}
+
+.roulette-name {
+  max-width: 100px;
+  font-size: 10px;
+  color: #9da5b8;
+}
+
+.opening-result {
+  display: none;
+  min-height: 150px;
+  place-content: center;
+  text-align: center;
+}
+
+.case-opening-overlay.result .roulette-window {
+  display: none;
+}
+
+.case-opening-overlay.result .opening-result {
+  display: grid;
+}
+
+.opening-result-icon {
+  font-size: 64px;
+  margin-bottom: 7px;
+
+  animation: obscDropPop .48s cubic-bezier(.2,1.5,.4,1);
+}
+
+.opening-result-name {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.opening-result-rarity {
+  color: #9da5b8;
+  margin-top: 5px;
+}
+
+/* PARTICLES */
+
+.obsc-particle {
+  position: absolute;
+  z-index: 20;
+
+  left: 50%;
+  top: 50%;
+
+  width: 5px;
+  height: 14px;
+
+  border-radius: 5px;
+  background: white;
+
+  pointer-events: none;
+
+  animation: obscParticle .9s ease-out forwards;
+}
+
+/* ANIMATIONS */
+
+@keyframes obscFloat {
+  0%,100% {
+    transform: rotate(45deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(45deg) translateY(-10px);
+  }
+}
+
+@keyframes obscPulse {
+  0%,100% {
+    transform: scale(.92);
+    opacity: .32;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: .55;
+  }
+}
+
+@keyframes obscHue {
+  from {
+    filter: blur(26px) hue-rotate(0deg);
+  }
+
+  to {
+    filter: blur(26px) hue-rotate(360deg);
+  }
+}
+
+@keyframes obscTextureMove {
+  from {
+    transform: translate3d(-20px,-20px,0);
+  }
+
+  to {
+    transform: translate3d(40px,40px,0);
+  }
+}
+
+@keyframes obscSkinSweep {
+  0%,20% {
+    transform: translateX(-60%) rotate(12deg);
+  }
+
+  60%,100% {
+    transform: translateX(65%) rotate(12deg);
+  }
+}
+
+@keyframes obscRoulette {
+  from {
+    transform: translateX(-15%);
+  }
+
+  to {
+    transform: translateX(-82%);
+  }
+}
+
+@keyframes obscDropPop {
+  from {
+    opacity: 0;
+    transform: scale(.3) rotate(-15deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes obscParticle {
+  from {
+    opacity: 1;
+    transform:
+      translate(-50%,-50%)
+      translate(0,0)
+      rotate(0deg);
+  }
+
+  to {
+    opacity: 0;
+    transform:
+      translate(-50%,-50%)
+      translate(var(--x),var(--y))
+      rotate(480deg);
+  }
+}
